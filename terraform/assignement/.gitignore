@@ -1,0 +1,7 @@
+.keys/*
+.keys
+*.swp
+terraform*
+.terraform
+.arch
+.tmp
