@@ -3,5 +3,6 @@
 *.swp
 terraform*
 .terraform
+.terraform.*
 .arch
 .tmp

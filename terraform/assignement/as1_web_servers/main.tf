@@ -1,4 +1,6 @@
 variable "id" {}
+variable "access_key" {}
+variable "secret_key" {}
 
 provider "aws" {
   access_key = "${var.access_key}"
@@ -37,8 +39,12 @@ resource "aws_volume_attachment" "ebs_att" {
 }
 
 
-output "public_ips" {
-  value = ["${aws_instance.as_web_servers.*.public_ip}"]
+output "key" {
+  value = "${var.access_key}"
+}
+
+output "pass" {
+  value = "${var.secret_key}"
 }
 
 
