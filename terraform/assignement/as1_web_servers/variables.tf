@@ -4,7 +4,7 @@ variable "region" {
 }
 
 variable "count_instances" {
-  default = "1"
+  default = "2"
 }
 
 variable "instance_type" {
@@ -45,3 +45,8 @@ variable "amis" {
     "ap-southeast-1" = "ami-6f198a0c"
   }
 }
+
+variable "ansible_repo_location" {
+  default = "./ansible-pb"
+}
+

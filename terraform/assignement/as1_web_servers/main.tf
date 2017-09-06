@@ -38,14 +38,14 @@ resource "aws_volume_attachment" "ebs_att" {
   instance_id = "${element(aws_instance.as_web_servers.*.id, count.index / length(var.ebs_volumes))}"
 }
 
+resource "null_resource" "create_hosts_file" {
+  triggers {
+    ebs_volume_ids = "${join(",", aws_volume_attachment.ebs_att.*.volume_id)}"
+  }
 
-output "key" {
-  value = "${var.access_key}"
+  provisioner "local_exec" {
+    command = "ANSIBLE_CONFIG=$HOME/'${var.ansible_repo_location}'/ansible.cfg ansible-playbook --private-key=./.keys/santb.pem -u ubuntu -e target=all -i '${join(",",aws_instance.as_web_servers.*.private_ip)}, ' $HOME/'${var.ansible_repo_location}'/playbooks/main.yml"
+    on_failure = "continue"
+  }
 }
-
-output "pass" {
-  value = "${var.secret_key}"
-}
-
-
 

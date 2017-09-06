@@ -9,11 +9,3 @@ module as1_web_servers {
   secret_key = "${var.secret_key}"
 }
 
-output "received_key" {
-  value = "${module.as1_web_servers.key}"
-}
-
-output "recieved_pass" {
-  value = "${module.as1_web_servers.pass}"
-}
-

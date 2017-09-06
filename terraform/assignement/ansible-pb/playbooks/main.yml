@@ -1,0 +1,13 @@
+---
+- name: install nginx and enable the service
+  hosts: "{{ hosts }}"
+  become: yes
+  tasks:
+    - name: update apt
+      apt:
+        name: {{ item }}
+        state: present
+        update_cache: yes
+      with_items:
+        - nginx
+
