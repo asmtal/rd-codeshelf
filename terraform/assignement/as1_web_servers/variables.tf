@@ -47,6 +47,6 @@ variable "amis" {
 }
 
 variable "ansible_repo_location" {
-  default = "./ansible-pb"
+  default = "workspace/rd-codeshelf/ansible/terraform-ansible-playbooks/assignment1"
 }
 

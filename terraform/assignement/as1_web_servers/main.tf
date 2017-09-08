@@ -43,8 +43,8 @@ resource "null_resource" "create_hosts_file" {
     ebs_volume_ids = "${join(",", aws_volume_attachment.ebs_att.*.volume_id)}"
   }
 
-  provisioner "local_exec" {
-    command = "ANSIBLE_CONFIG=$HOME/'${var.ansible_repo_location}'/ansible.cfg ansible-playbook --private-key=./.keys/santb.pem -u ubuntu -e target=all -i '${join(",",aws_instance.as_web_servers.*.private_ip)}, ' $HOME/'${var.ansible_repo_location}'/playbooks/main.yml"
+  provisioner "local-exec" {
+    command = "ANSIBLE_CONFIG=$HOME/${var.ansible_repo_location}/ansible.cfg ansible-playbook --private-key=./.keys/santb.pem -u ubuntu -e target=all -i '${join(",",aws_instance.as_web_servers.*.private_ip)}, ' $HOME/${var.ansible_repo_location}/playbooks/main.yml"
     on_failure = "continue"
   }
 }
