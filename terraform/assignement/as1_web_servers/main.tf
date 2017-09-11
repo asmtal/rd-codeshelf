@@ -39,12 +39,30 @@ resource "aws_volume_attachment" "ebs_att" {
 }
 
 resource "null_resource" "create_hosts_file" {
-  triggers {
-    ebs_volume_ids = "${join(",", aws_volume_attachment.ebs_att.*.volume_id)}"
+  count = "${length(var.ebs_volumes)  * var.count_instances }"
+
+  connection {
+    host = "${element(aws_instance.as_web_servers.*.public_ip, count.index)}"
+    type = "ssh"
+    user = "ubuntu"
+    private_key = "${file("${path.module}/../${var.private_key}")}"
+    timeout = "10m"
   }
 
+  provisioner "remote-exec" {
+    inline = [
+      "sudo apt-get update -y",
+      "sudo apt-get install python -y",
+    ]
+    on_failure = "fail"
+  }
+
+}
+
+resource "null_resource" "run_ansible" {
+
   provisioner "local-exec" {
-    command = "ANSIBLE_CONFIG=$HOME/${var.ansible_repo_location}/ansible.cfg ansible-playbook --private-key=./.keys/santb.pem -u ubuntu -e target=all -i '${join(",",aws_instance.as_web_servers.*.private_ip)}, ' $HOME/${var.ansible_repo_location}/playbooks/main.yml"
+    command = "ANSIBLE_CONFIG=$HOME/${var.ansible_repo_location}/ansible.cfg ansible-playbook --private-key=./.keys/santb.pem -u ubuntu -e target=all -i '${join(",",aws_instance.as_web_servers.*.public_ip)}, ' $HOME/${var.ansible_repo_location}/playbooks/main.yml"
     on_failure = "continue"
   }
 }

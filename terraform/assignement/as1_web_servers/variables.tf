@@ -50,3 +50,6 @@ variable "ansible_repo_location" {
   default = "workspace/rd-codeshelf/ansible/terraform-ansible-playbooks/assignment1"
 }
 
+variable "private_key" {
+  default = ".keys/santb.pem"
+}
